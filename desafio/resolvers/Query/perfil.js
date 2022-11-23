@@ -1,10 +1,26 @@
 const db = require('../../config/db')
 
 module.exports = {
-    async perfis() {
-        return await db('perfis').select('nome', 'id')
+    perfis() {
+        return db('perfis')
     },
-    async perfil(_, { filtro }) {
-        // implementar
+    perfil(_, { filtro }) {
+        if (!filtro) return null
+        
+        const { id, nome } = filtro
+
+        if (id) {
+            return db('perfis')
+               .where({ id })
+               .first()
+        }
+
+        if (nome) {
+            return db('perfis')
+                .where({ nome })
+                .first()
+        }
+
+        return null
     }
 }
