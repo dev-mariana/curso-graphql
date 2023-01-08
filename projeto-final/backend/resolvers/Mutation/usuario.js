@@ -13,7 +13,9 @@ const mutations = {
             }
         })
     },
-    async novoUsuario(_, { dados }) {
+    async novoUsuario(_, { dados }, context) {
+        context && context.validarAdmin();
+
         try {
             const idsPerfis = [];
 
@@ -46,7 +48,9 @@ const mutations = {
             throw new Error(e.sqlMessage);
         }
     },
-    async excluirUsuario(_, args) {
+    async excluirUsuario(_, args, context) {
+        context && context.validarAdmin();
+
         try {
             const usuario = await obterUsuario(_, args);
 
@@ -61,7 +65,9 @@ const mutations = {
         }
 
     },
-    async alterarUsuario(_, { filtro, dados }) {
+    async alterarUsuario(_, { filtro, dados }, context) {
+        context && context.validarUsuarioFiltro(filtro);
+
         try {
             const usuario = await obterUsuario(_, { filtro });
             if (usuario) {
